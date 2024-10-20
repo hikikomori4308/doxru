@@ -12,7 +12,7 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
         .then(data => {
             const lines = data.split('\n');
             let found = false;
-            let output = '<table><tr><th>Номер телефона</th><th>Паспорт</th><th>ИНН</th><th>Telegram ID</th><th>VK ID</th><th>Почта</th></tr>';
+            let output = '<table><tr><th>Номер телефона</th><th>Паспорт</th><th>ИНН</th><th>Telegram Username</th><th>Вконтакте</th><th>Почта</th></tr>';
 
             lines.forEach(line => {
                 const parts = line.split(','); // Разделяем строку по запятой

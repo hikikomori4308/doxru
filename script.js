@@ -3,7 +3,10 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
     
     const number = document.getElementById('numberInput').value.trim();
     const dataType = document.getElementById('dataType').value;
-    
+    const tableBody = document.getElementById('tableBody');
+    tableBody.innerHTML = ''; // Очищаем таблицу перед новым поиском
+    document.getElementById('dataTable').style.display = 'none'; // Скрываем таблицу
+
     fetch('data.txt')
         .then(response => {
             if (!response.ok) throw new Error('Сеть не ответила');
@@ -11,15 +14,15 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
         })
         .then(data => {
             const lines = data.split('\n');
-            let result = 'Данные не найдены';
+            let found = false;
 
             lines.forEach(line => {
-                const parts = line.split(','); // Разделяем строку по запятой
-                
+                const parts = line.split(',');
+
                 // Проверяем, что у нас есть достаточно элементов
                 if (parts.length < 6) {
                     console.warn('Недостаточно данных в строке:', line);
-                    return; // Пропускаем строку, если она недостаточно длинная
+                    return;
                 }
 
                 // Проверяем тип данных в зависимости от выбранной опции
@@ -29,11 +32,24 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
                     (dataType === 'telegram' && parts[3].trim() === number) || 
                     (dataType === 'vk' && parts[4].trim() === number) || 
                     (dataType === 'email' && parts[5].trim() === number)) {
-                    result = line; // вывод всей строки с данными
+                    found = true; // Устанавливаем флаг, если данные найдены
+
+                    // Создаем новую строку таблицы
+                    const newRow = document.createElement('tr');
+                    parts.forEach(part => {
+                        const newCell = document.createElement('td');
+                        newCell.textContent = part.trim();
+                        newRow.appendChild(newCell);
+                    });
+                    tableBody.appendChild(newRow); // Добавляем строку в таблицу
                 }
             });
 
-            document.getElementById('result').textContent = result;
+            if (found) {
+                document.getElementById('dataTable').style.display = 'table'; // Показываем таблицу, если найдены данные
+            } else {
+                document.getElementById('result').textContent = 'Данные не найдены';
+            }
         })
         .catch(error => {
             console.error('Ошибка:', error);

@@ -1,7 +1,7 @@
 document.getElementById('searchForm').addEventListener('submit', function(event) {
     event.preventDefault();
     
-    const number = document.getElementById('numberInput').value;
+    const number = document.getElementById('numberInput').value.trim();
     
     fetch('data.txt')
         .then(response => response.text())
@@ -10,7 +10,8 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
             let result = 'Номер не найден';
 
             lines.forEach(line => {
-                if (line.includes(number)) {
+                const parts = line.split(','); // Предполагается, что данные разделены запятой
+                if (parts[0].trim() === number) { // Сравнение с первым элементом строки (номер)
                     result = line; // вывод всей строки с данным номером
                 }
             });

@@ -3,9 +3,8 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
     
     const number = document.getElementById('numberInput').value.trim();
     const dataType = document.getElementById('dataType').value;
-    const tableBody = document.getElementById('tableBody');
-    tableBody.innerHTML = ''; // Очищаем таблицу перед новым поиском
-    document.getElementById('dataTable').style.display = 'none'; // Скрываем таблицу
+    const resultDiv = document.getElementById('result');
+    resultDiv.textContent = ''; // Очищаем результат перед новым поиском
 
     fetch('data.txt')
         .then(response => {
@@ -15,9 +14,10 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
         .then(data => {
             const lines = data.split('\n');
             let found = false;
+            let output = '<table><tr><th>Номер телефона</th><th>Паспорт</th><th>ИНН</th><th>Telegram ID</th><th>VK ID</th><th>Почта</th></tr>';
 
             lines.forEach(line => {
-                const parts = line.split(',');
+                const parts = line.split(',').map(part => part.trim());
 
                 // Проверяем, что у нас есть достаточно элементов
                 if (parts.length < 6) {
@@ -26,39 +26,35 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
                 }
 
                 // Проверяем тип данных в зависимости от выбранной опции
-                if ((dataType === 'phone' && parts[0].trim() === number) || 
-                    (dataType === 'passport' && parts[1].trim() === number) || 
-                    (dataType === 'inn' && parts[2].trim() === number) || 
-                    (dataType === 'telegram' && parts[3].trim() === number) || 
-                    (dataType === 'vk' && parts[4].trim() === number) || 
-                    (dataType === 'email' && parts[5].trim() === number)) {
+                if ((dataType === 'phone' && parts[0] === number) || 
+                    (dataType === 'passport' && parts[1] === number) || 
+                    (dataType === 'inn' && parts[2] === number) || 
+                    (dataType === 'telegram' && parts[3] === number) || 
+                    (dataType === 'vk' && parts[4] === number) || 
+                    (dataType === 'email' && parts[5] === number)) {
                     found = true; // Устанавливаем флаг, если данные найдены
 
-                    // Создаем новую строку таблицы
-                    const newRow = document.createElement('tr');
-
-                    // Добавляем названия и значения в отдельные ячейки
-                    newRow.innerHTML = `
-                        <td>${parts[0].trim()}</td>
-                        <td>${parts[1].trim()}</td>
-                        <td>${parts[2].trim()}</td>
-                        <td>${parts[3].trim()}</td>
-                        <td>${parts[4].trim()}</td>
-                        <td>${parts[5].trim()}</td>
-                    `;
-                    
-                    tableBody.appendChild(newRow); // Добавляем строку в таблицу
+                    // Добавляем найденные данные в таблицу
+                    output += `<tr>
+                        <td>${parts[0]}</td>
+                        <td>${parts[1]}</td>
+                        <td>${parts[2]}</td>
+                        <td>${parts[3]}</td>
+                        <td>${parts[4]}</td>
+                        <td>${parts[5]}</td>
+                    </tr>`;
                 }
             });
 
+            output += '</table>';
             if (found) {
-                document.getElementById('dataTable').style.display = 'table'; // Показываем таблицу, если найдены данные
+                resultDiv.innerHTML = output; // Показываем таблицу с данными
             } else {
-                document.getElementById('result').textContent = 'Данные не найдены';
+                resultDiv.textContent = 'Данные не найдены'; // Показать сообщение, если данные не найдены
             }
         })
         .catch(error => {
             console.error('Ошибка:', error);
-            document.getElementById('result').textContent = 'Произошла ошибка';
+            resultDiv.textContent = 'Произошла ошибка';
         });
 });

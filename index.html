@@ -7,9 +7,17 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Введите номер для поиска</h1>
+    <h1>Введите данные для поиска</h1>
     <form id="searchForm">
-        <input type="text" id="numberInput" placeholder="Введите номер">
+        <select id="dataType">
+            <option value="phone">Номер телефона</option>
+            <option value="passport">Паспорт</option>
+            <option value="inn">ИНН</option>
+            <option value="telegram">Telegram ID</option>
+            <option value="vk">ВКонтакте</option>
+            <option value="email">Почта</option>
+        </select>
+        <input type="text" id="numberInput" placeholder="Введите данные">
         <button type="submit">Найти</button>
     </form>
     <div id="result"></div>

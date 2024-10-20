@@ -36,11 +36,17 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
 
                     // Создаем новую строку таблицы
                     const newRow = document.createElement('tr');
-                    parts.forEach(part => {
-                        const newCell = document.createElement('td');
-                        newCell.textContent = part.trim();
-                        newRow.appendChild(newCell);
-                    });
+
+                    // Добавляем названия и значения в отдельные ячейки
+                    newRow.innerHTML = `
+                        <td>${parts[0].trim()}</td>
+                        <td>${parts[1].trim()}</td>
+                        <td>${parts[2].trim()}</td>
+                        <td>${parts[3].trim()}</td>
+                        <td>${parts[4].trim()}</td>
+                        <td>${parts[5].trim()}</td>
+                    `;
+                    
                     tableBody.appendChild(newRow); // Добавляем строку в таблицу
                 }
             });

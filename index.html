@@ -3,25 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Поиск по номеру</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Поиск данных</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-    <h1>Введите данные для поиска</h1>
+    <h1>Поиск данных</h1>
     <form id="searchForm">
+        <label for="dataType">Выберите тип данных:</label>
         <select id="dataType">
             <option value="phone">Номер телефона</option>
             <option value="passport">Паспорт</option>
             <option value="inn">ИНН</option>
             <option value="telegram">Telegram ID</option>
-            <option value="vk">ВКонтакте</option>
+            <option value="vk">VK ID</option>
             <option value="email">Почта</option>
         </select>
-        <input type="text" id="numberInput" placeholder="Введите данные">
-        <button type="submit">Найти</button>
+        <input type="text" id="numberInput" placeholder="Введите данные" required>
+        <button type="submit">Поиск</button>
     </form>
     <div id="result"></div>
-
+    <table id="dataTable" style="display: none;">
+        <thead>
+            <tr>
+                <th>Номер телефона</th>
+                <th>Паспорт</th>
+                <th>ИНН</th>
+                <th>Telegram ID</th>
+                <th>VK ID</th>
+                <th>Почта</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
     <script src="script.js"></script>
 </body>
 </html>
